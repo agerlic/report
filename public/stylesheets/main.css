@@ -1,0 +1,154 @@
+body * {
+    border: 0 none;
+    font-size: 100%;
+    margin: 0;
+    outline: 0 none;
+    padding: 0;
+    vertical-align: baseline;
+}
+body {
+    background: none repeat scroll 0 0 white;
+    color: black;
+    line-height: 1;
+    font: 13px/1.5 "Helvetica Neue",sans-serif;
+    padding: 0;
+    background-color: #F0F0F0;
+    color: #333333;
+    margin: 0;
+}
+ul {
+    list-style: none;
+}
+
+.aside, .section {
+    border: 0 none;
+    display: block;
+    margin: 0;
+    outline: 0 none;
+    padding: 0;
+}
+h1, h2, h3 {
+    color: black;
+    font-weight: 300;
+}
+h1 {
+    font-size: 26px;
+    line-height: 26px;
+    margin: 18px 0 2px;
+}
+h2 {
+    font-size: 18px;
+    line-height: 22px;
+    margin: 14px 0 8px;
+}
+h3 {
+    font-size: 18px;
+    line-height: 18px;
+    margin: 13px 0 6px;
+}
+a {
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+.text {
+    background-color: #FAFAFA;
+    box-shadow: 0 0 10px 0 #CCCCCC;
+    color: #333333;
+    margin: 0 auto;
+    max-width: 840px;
+    overflow: hidden;
+    padding: 30px;
+}
+
+.text {
+    padding: 15px 10px;
+}
+.columns {
+    overflow: hidden;
+}
+.columns > * {
+    float: left;
+}
+.columns > *:first-child {
+    border-right: 1px solid #EEEEEE;
+}
+.columns > *:first-child > * {
+    margin-right: 20px !important;
+}
+.columns > *:last-child {
+    border-left: 1px solid #EEEEEE;
+    left: -1px;
+    position: relative;
+}
+.columns > *:last-child > * {
+    margin-left: 20px;
+}
+.columns > .section {
+    width: 49%;
+}
+.columns.sidebar > .section {
+    width: 70%;
+}
+.columns.sidebar > .aside {
+    min-height: 400px;
+    width: 29.5%;
+}
+.columns.sidebar .columns {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+.home .section p:first-child {
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 26px;
+    margin-top: 0;
+}
+.home .aside {
+    font-size: 11.5px;
+    line-height: 15px;
+}
+.home .aside a {
+    color: #666666;
+}
+.home .aside h2:first-child {
+    margin-top: 0;
+}
+
+#history, #status {
+    text-align: right;
+}
+#history h2, #history ul, #status h2, #status ul {
+    text-align: left;
+}
+#history ul, #status ul {
+    margin: 7px 0;
+}
+
+.right {
+	text-align:right;
+}
+
+#status ul li div:first-child {
+	float:left;
+	width:90%;	
+}
+#footer {
+    color: #777777;
+    font-size: 11px;
+    margin: 20px auto;
+    max-width: 840px;
+    padding: 10px 10px 10px 50px;
+    position: relative;
+    
+
+}
+#footer a {
+    color: #444444;
+}
+
+.tinyText {
+	font-size: 11px;
+}

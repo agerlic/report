@@ -1,0 +1,5 @@
+Report ${report.creationDate.format(play.Play.configuration.get("date.format"))}
+
+#{list items:res, as:'r'}
+${r}
+#{/list}

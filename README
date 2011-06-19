@@ -1,0 +1,14 @@
+Report is a web application based on the play framework : http://www.playframework.org/
+
+It is a simple application, to handle report edition better than a wiki page.
+Features:
+ * Concurrent edition
+ * Report shown as tree
+ * Send reminders to people who are not yet completed his report part
+ * Send reports by email 
+ * History section containing all past reports
+
+
+TODO:
+ * search
+ * admin section

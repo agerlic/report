@@ -1,0 +1,4 @@
+Report Reminder
+
+${play.Play.configuration.get("hostName")}
+

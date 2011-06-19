@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>#{get 'title' /}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/main.css'}">
+        <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/jquery-ui.css'}">
+        <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/jsTree/apple/style.css'}">
+        <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/jsTree/default/style.css'}">
+        <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/jsTree/classic/style.css'}">
+
+        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+        <script src="@{'/public/javascripts/jquery-1.4.2.min.js'}" type="text/javascript" charset="utf-8"></script>
+        <script src="@{'/public/javascripts/jquery.cookie.js'}" type="text/javascript" charset="utf-8"></script>
+        <script src="@{'/public/javascripts/jquery.hotkeys.js'}" type="text/javascript" charset="utf-8"></script>
+        <script src="@{'/public/javascripts/jquery.jstree.js'}" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js"></script>
+    </head>
+    <body>
+        <div class="text columns home sidebar">
+        	<div class="section">	
+        		#{doLayout /}
+        	</div>
+        	<div class="aside">
+        		<div id="history">
+        			<h2>History</h2>
+        			<ul>
+	        			#{list historyReports, as:'hr'}
+        				<li><a href="@{Reports.show(hr.id)}">${hr.creationDate.format(play.Play.configuration.get("date.format"))}</a></li>
+        				#{/list}
+        			</ul>
+        				<a href="@{Reports.newReport()}" class="jButton">
+							New Team Report
+					</a>
+        		</div>
+        		<div id="status">
+        			<h2>Status</h2>
+        			<ul>
+	        			#{list usersStatus, as:'us'}
+        				<li><div>${us.name}</div> ${us.isComplete ? "<img src='/public/images/green_tick.png' />".raw(): 
+        					"<img src='/public/images/red_cross.png' />".raw()}</li>
+        				#{/list}
+        			</ul>
+        			#{if needReminder && canSendReminder}
+					<a href="@{Reports.sendReminders(report_id)}" class="jButton">	
+						Send Reminders
+					</a>
+				#{/if}
+        		</div>
+        	</div>
+        </div>
+        <div id="footer">
+        	<p>Reports v0.1</p>
+        </div>
+    </body>
+</html>

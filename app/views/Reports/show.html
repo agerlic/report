@@ -1,0 +1,166 @@
+#{extends 'main.html' /}	
+#{set title:'Report' /}
+<div class="columns">
+	<div class="section">
+		<p>Hello ${user}<br/><span class="tinyText">(<a href="@{Secure.logout()}">Log out</a>)</span></p>
+	</div>
+	<div class="aside">
+	 	<a href="@{Reports.sendReport(report_id)}" class="jButton">
+	 	%{mailDestination = play.Play.configuration.get("mailDestination") }%
+	 	#{if (mailDestination == null || mailDestination.isEmpty())}
+			Send me Report
+		#{/if}
+		#{else}
+			Send Report
+		#{/else}
+		</a>
+	</div>
+</div>
+
+
+<h2>Current Report</h2>
+<div id="mainTree"></div>
+
+#{if canUpdate}
+<hr/>
+<div id="myReportSection">
+	<h2>My Report</h2>
+	<div id="myTree"></div>
+	#{if userContent != null }
+	<p align="right"><button id="jSaveButton" class="jButton">Update</button></p>
+	#{/if}
+	#{else}
+	<p align="right"><button id="jSaveButton" class="jButton">Save</button></p>
+	#{/else}
+</div>
+#{/if}
+
+
+<script language="javascript">
+	(function ($) {
+	$.jstree.plugin("customClicksHandler", {
+		__init : function () {
+			this.get_container()
+				.delegate("a", "contextmenu.jstree", $.proxy(function (e) {
+						e.preventDefault();
+						this.show_contextmenu(e.currentTarget, e.pageX, e.pageY);
+					}, this))
+				.delegate("a", "dblclick.jstree", $.proxy(function (e) {
+						e.preventDefault();
+						this.create(e.currentTarget);}, this) )
+				.bind("destroy.jstree", $.proxy(function () {
+						if(this.data.contextmenu) {
+							$.vakata.context.hide();
+						}
+					}, this));
+			$(document).bind("context_hide.vakata", $.proxy(function () { this.data.contextmenu = false; }, this));
+		},
+		defaults : { 
+			select_node : false, // requires UI plugin
+			show_at_node : true,
+			items : { // Could be a function that should return an object like this one
+				"create" : {
+					"separator_before"	: false,
+					"separator_after"	: true,
+					"label"				: "Create",
+					"action"			: function (obj) { this.create(obj); }
+				},
+				"rename" : {
+					"separator_before"	: false,
+					"separator_after"	: false,
+					"label"				: "Rename",
+					"action"			: function (obj) { this.rename(obj); }
+				},
+				"remove" : {
+					"separator_before"	: false,
+					"icon"				: false,
+					"separator_after"	: false,
+					"label"				: "Delete",
+					"action"			: function (obj) { this.remove(obj); }
+				}
+			}
+		},
+		_fn : {
+			show_contextmenu : function (obj, x, y) {
+				obj = this._get_node(obj);
+				var s = this.get_settings().customClicksHandler,
+					a = obj.children("a:visible:eq(0)"),
+					o = false;
+				if(s.select_node && this.data.ui && !this.is_selected(obj)) {
+					this.deselect_all();
+					this.select_node(obj, true);
+				}
+				if(s.show_at_node || typeof x === "undefined" || typeof y === "undefined") {
+					o = a.offset();
+					x = o.left;
+					y = o.top + this.data.core.li_height;
+				}
+				if($.isFunction(s.items)) { s.items = s.items.call(this, obj); }
+				this.data.contextmenu = true;
+				$.vakata.context.show(s.items, a, x, y, this, obj);
+				if(this.data.themes) { $.vakata.context.cnt.attr("class", "jstree-" + this.data.themes.theme + "-context"); }
+			}
+		}
+	});
+})(jQuery);
+	
+	
+	$(document).ready(function() {
+		$(".jButton").button();		
+		$("#mainTree").jstree({ 
+			"json_data" : {
+					"ajax": {
+						"url" : "@{Reports.mergeReports(report_id)}",
+					}	
+			},
+			"themes": {
+				"theme": "classic",
+				"icons" : false
+			},
+			"plugins" : [ "themes", "json_data" ]
+		});
+				
+#{if canUpdate}	
+		//MyTree
+		var persoReport;
+		#{if userContent != null }
+			 persoReport = $.parseJSON('${userContent.addSlashes().raw()}');
+		#{/if}
+		#{else}
+			 persoReport = {"data" : "${user}", attr : {"rel" : "root"}, "children":[]}
+		#{/else}
+		$("#myTree").jstree({ 
+			"types" : {
+				"valid_children" : [ "root" ],
+				"types" : {
+					"root" : {
+						"start_drag" : false,
+						"move_node" : false,
+						"delete_node" : false,
+						"remove" : false 
+					}, 
+					"default" : {}
+				}
+			},
+			"json_data" : {
+				"data" :persoReport
+			},
+			"themes": {
+				"theme": "classic",
+				"icons" : false
+			},
+			"plugins" : [ "themes", "json_data", "ui", "crrm", "customClicksHandler", "types" ]
+		});
+				
+		$("#jSaveButton").click(function() {
+			jQuery.jstree._reference($("#myTree")).select_node($("#myTree > ul > li:first"))
+			var myContent = JSON.stringify(jQuery.jstree._reference($("#myTree")).get_json());
+			$.post("@{Reports.save(report_id)}", {content : myContent}, function(data) {
+				var redirURL = #{jsAction @Reports.show(report_id) /}
+				$(location).attr('href', redirURL);
+			}); 
+		});
+#{/if}
+
+	});
+</script>
