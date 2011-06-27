@@ -3,6 +3,7 @@ package models;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 import play.db.jpa.Model;
@@ -15,6 +16,7 @@ public class UserReport extends Model implements Comparable<UserReport>{
 	@ManyToOne
 	public Report fullReport;
 	
+	@Lob
 	public String content;
 	
 	public Date creationDate;
